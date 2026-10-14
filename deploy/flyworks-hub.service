@@ -1,0 +1,23 @@
+[Unit]
+Description=FlyWorks Hub (ensaio, eleição real bloqueada)
+After=network.target
+
+[Service]
+Type=simple
+User=flyworks
+Group=flyworks
+WorkingDirectory=/opt/flyworks-hub
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/flyworks-hub.env
+ExecStart=/usr/bin/node backend/server.mjs
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/flyworks-hub/.private
+
+[Install]
+WantedBy=multi-user.target

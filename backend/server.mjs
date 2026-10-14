@@ -89,9 +89,9 @@ export function createHub({env=process.env,store,verifyToken,exchangeCode}={}){
    if(req.method!=='GET'&&req.method!=='HEAD')throw new HubError(405,'Método não permitido.');
    // Explicit allowlist: never serve backend, configuration secrets, members or database.
    const staticPath=path==='/'?'index.html':path.slice(1);
-   if(!['index.html','app.js','auth.js','styles.css','config.js'].includes(staticPath)&&!/^assets\/[A-Za-z0-9_.-]+$/.test(staticPath))throw new HubError(404,'Arquivo não encontrado.');
+   if(!['index.html','app.js','auth.js','styles.css','config.js','pwa.js','sw.js','manifest.webmanifest','offline.html'].includes(staticPath)&&!/^assets\/[A-Za-z0-9_.-]+$/.test(staticPath))throw new HubError(404,'Arquivo não encontrado.');
    let data;try{data=readFileSync(resolve(ROOT,staticPath))}catch{throw new HubError(404,'Arquivo não encontrado.')}
-   const ext=staticPath.split('.').pop(),type={html:'text/html',js:'text/javascript',css:'text/css',png:'image/png',ttf:'font/ttf',pdf:'application/pdf',txt:'text/plain'}[ext]||'application/octet-stream';res.writeHead(200,{'Content-Type':type,'Cache-Control':'no-cache'});res.end(req.method==='HEAD'?undefined:data);
+   const ext=staticPath.split('.').pop(),type={html:'text/html',js:'text/javascript',css:'text/css',png:'image/png',ttf:'font/ttf',pdf:'application/pdf',txt:'text/plain',webmanifest:'application/manifest+json'}[ext]||'application/octet-stream';res.writeHead(200,{'Content-Type':type,'Cache-Control':'no-cache'});res.end(req.method==='HEAD'?undefined:data);
   }catch(error){send(res,error instanceof HubError?error.status:500,{error:error instanceof HubError?error.message:'Falha interna. Tente novamente ou contate a comissão.'})}
  });
  let callbackServer=null;if(callbackURL.origin!==origin)callbackServer=http.createServer((req,res)=>{if(new URL(req.url,redirect).pathname!=='/oauth/callback'){res.writeHead(404);res.end();return}server.emit('request',req,res)});
