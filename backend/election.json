@@ -1,0 +1,53 @@
+{
+  "id": "ensaio-diretoria-2027",
+  "title": "Eleições Diretoria 2027 · Ensaio",
+  "mode": "rehearsal",
+  "status": "closed",
+  "positions": [
+    {
+      "id": "cargo-1",
+      "options": [
+        "exemplo-a",
+        "exemplo-b",
+        "blank"
+      ],
+      "name": "Diretor Presidente"
+    },
+    {
+      "id": "cargo-2",
+      "options": [
+        "exemplo-a",
+        "exemplo-b",
+        "blank"
+      ],
+      "name": "Diretor Administrativo"
+    },
+    {
+      "id": "cargo-3",
+      "options": [
+        "exemplo-a",
+        "exemplo-b",
+        "blank"
+      ],
+      "name": "Diretor Jurídico-Financeiro"
+    },
+    {
+      "id": "cargo-4",
+      "options": [
+        "exemplo-a",
+        "exemplo-b",
+        "blank"
+      ],
+      "name": "Diretor de Projetos"
+    },
+    {
+      "id": "cargo-5",
+      "options": [
+        "exemplo-a",
+        "exemplo-b",
+        "blank"
+      ],
+      "name": "Diretor Comercial"
+    }
+  ]
+}

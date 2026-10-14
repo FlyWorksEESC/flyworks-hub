@@ -1,0 +1,10 @@
+import {existsSync,readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {ROOT} from './server.mjs';
+const env=process.env, checks=[];
+const add=(name,ok)=>checks.push({item:name,status:ok?'OK':'PENDENTE'});
+add('Client ID Google',!!env.GOOGLE_CLIENT_ID);add('Client secret para autorização da conta Fly',!!env.GOOGLE_CLIENT_SECRET);
+add('Segredo de eleitor (mínimo 32 caracteres)',(env.VOTER_HASH_SECRET||'').length>=32);
+for(const [name,file] of [['Membros autorizados',env.MEMBERS_FILE||'.private/members.json'],['Chave pública da urna de ensaio',env.BALLOT_PUBLIC_KEY_FILE||'.private/ballot-public.pem'],['Autorização Google Fly',env.GOOGLE_TOKEN_FILE||'.private/google-token.json'],['Planilha Fly',env.GOOGLE_SHEET_FILE||'.private/google-sheet.json']])add(name,existsSync(resolve(ROOT,file)));
+console.table(checks);console.log('Eleição real permanece bloqueada. Esta checagem não valida credenciais remotamente.');
+if(checks.some(c=>c.status==='PENDENTE'))process.exitCode=1;

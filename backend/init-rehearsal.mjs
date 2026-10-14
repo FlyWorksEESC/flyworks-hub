@@ -1,0 +1,11 @@
+import {generateKeyPairSync,randomBytes} from 'node:crypto';
+import {mkdirSync,writeFileSync,existsSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {ROOT} from './server.mjs';
+const dir=resolve(ROOT,'.private');mkdirSync(dir,{recursive:true,mode:0o700});
+for(const name of ['ballot-public.pem','custodian-private.pem'])if(existsSync(resolve(dir,name)))throw new Error('Já existem chaves. Não substituir: isso impediria apurar cédulas anteriores.');
+const {publicKey,privateKey}=generateKeyPairSync('rsa',{modulusLength:3072,publicKeyEncoding:{type:'spki',format:'pem'},privateKeyEncoding:{type:'pkcs8',format:'pem'}});
+writeFileSync(resolve(dir,'ballot-public.pem'),publicKey,{mode:0o600});writeFileSync(resolve(dir,'custodian-private.pem'),privateKey,{mode:0o600});
+if(!existsSync(resolve(dir,'members.json')))writeFileSync(resolve(dir,'members.json'),'[]\n',{mode:0o600});
+console.log('Chaves de ensaio criadas. Mova custodian-private.pem para a custódia offline antes de operar. Não inclua no servidor ou no ZIP.');
+console.log('Configure VOTER_HASH_SECRET com um segredo novo de 32 bytes ou mais no .env.');
